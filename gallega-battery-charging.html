@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gallega Battery Charging</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f8fafc;--card:#fff;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--brand:#059669;--brandbg:#ecfdf5;--chip:#f1f5f9;--dim:rgba(15,23,42,.5)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c2e;--ink:#e8eefc;--mute:#94a3b8;--line:#25314a;--brandbg:#0d2b24;--chip:#1b2740;--dim:rgba(0,0,0,.65)}}
+:root[data-theme="dark"]{--bg:#0b1220;--card:#131c2e;--ink:#e8eefc;--mute:#94a3b8;--line:#25314a;--brandbg:#0d2b24;--chip:#1b2740;--dim:rgba(0,0,0,.65)}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.app{display:flex;min-height:100%}
+.side{width:240px;flex:none;background:var(--card);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;height:100dvh}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 16px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--brand);display:grid;place-items:center;color:#fff}
+.brand b{display:block;font-size:15px}.brand small{color:var(--mute);font-size:11px}
+.nav{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;border:0;background:none;text-align:left;color:var(--mute);font-weight:600;width:100%}
+.nav.on{background:var(--brandbg);color:var(--brand)}
+.nav:hover{background:var(--chip)}
+.me{margin-top:auto;border-top:1px solid var(--line);padding:12px 8px 0;display:flex;gap:10px;align-items:center}
+.av{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.me div{min-width:0;flex:1}.me b,.me small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.me small{color:var(--mute)}
+main{flex:1;min-width:0;padding:32px 32px 48px;max-width:1100px}
+h1{margin:0;font-size:26px}h2{font-size:16px;margin:28px 0 12px;display:flex;gap:8px;align-items:center}
+.sub{color:var(--mute);margin:4px 0 20px}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;font-weight:600}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.red{color:#dc2626}.btn:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;justify-content:space-between;gap:8px}
+.stat span{font-weight:600}.stat strong{display:block;font-size:30px;margin-top:4px}.stat small{color:var(--mute)}
+.ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
+.list{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid var(--line);cursor:pointer}
+.row:first-child{border-top:0}.row:hover{background:var(--bg)}
+.row .l{flex:1;min-width:0}.row .l b{font-size:15px}.row .l small{display:block;color:var(--mute)}
+.loc{width:150px;color:var(--mute)}.volt{text-align:right;min-width:90px}.volt b{display:block}.volt small{color:var(--mute);font-size:12px}
+.tag{background:var(--chip);color:var(--mute);border-radius:6px;font-size:11px;padding:1px 7px;margin-left:6px;font-weight:600}
+.b{display:inline-flex;gap:6px;align-items:center;border-radius:99px;padding:2px 12px;font-size:12px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);white-space:nowrap}
+.b i{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.s-Critical{--c:#ef4444}.s-Low{--c:#ea580c}.s-Fair{--c:#d97706}.s-Good{--c:#16a34a}.s-Charged{--c:#059669}.s-Charging{--c:#0ea5e9}.s-Faulty{--c:#9333ea}
+.search,.in{width:100%;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:5px 14px;font-weight:600;font-size:13px}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dim{position:fixed;inset:0;background:var(--dim);display:grid;place-items:center;padding:16px;z-index:9;overflow:auto}
+.modal{background:var(--card);border-radius:14px;padding:22px;width:100%;max-width:480px;max-height:92vh;overflow:auto;position:relative}
+.modal h3{margin:0 0 14px;font-size:18px}.x{position:absolute;right:14px;top:12px;border:0;background:none;font-size:22px;color:var(--mute)}
+label{display:block;font-weight:600;margin:12px 0 4px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.wide{width:100%;margin-top:16px;padding:11px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:480px}
+th{text-align:left;color:var(--mute);font-size:12px;font-weight:600;padding:10px 18px;background:var(--bg)}td{padding:12px 18px;border-top:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;padding:6px 18px}.bar em{width:70px;font-style:normal}.bar div{flex:1;height:8px;background:var(--chip);border-radius:9px}.bar div i{display:block;height:100%;border-radius:9px;background:var(--c)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.seg button{border:0;background:var(--card);padding:7px 14px;font-weight:600}.seg .on{background:var(--ink);color:var(--bg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.card h3{margin:0 0 4px;font-size:16px}.card p{color:var(--mute);margin:0 0 12px}
+.th4{display:grid;grid-template-columns:90px repeat(4,1fr);gap:8px;align-items:center;margin-bottom:8px}.th4 small{color:var(--mute)}
+.role{font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;background:var(--brandbg);color:var(--brand)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;z-index:20;font-weight:600}
+.empty{padding:28px;text-align:center;color:var(--mute)}.note{color:var(--mute);font-size:12px;margin-top:8px}
+.login{max-width:400px;margin:8vh auto;padding:0 16px}.login .card{padding:24px}
+.pick{display:flex;gap:12px;align-items:center;width:100%;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;margin-top:8px;text-align:left}
+.pick.on{border-color:var(--brand);background:var(--brandbg)}
+.err{color:#dc2626;font-weight:600;margin-top:8px}
+@media(max-width:860px){.stats{grid-template-columns:1fr 1fr}.loc{display:none}}
+@media(max-width:760px){.app{flex-direction:column}.side{width:100%;height:auto;position:sticky;top:0;z-index:5;flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line);align-items:center}.brand,.me{display:none}.nav{width:auto;padding:8px 12px;white-space:nowrap}main{padding:20px 16px 40px}.g2{grid-template-columns:1fr}.th4{grid-template-columns:50px repeat(4,1fr)}}
+@media(prefers-reduced-motion:no-preference){.modal{animation:pop .15s ease-out}@keyframes pop{from{transform:scale(.97);opacity:0}}}
+</style></head><body><div id="root"></div><div id="modal"></div><div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),H=3600e3,KEY='voltguard-v1';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const IC={dash:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',plus:'<path d="M12 5v14M5 12h14"/>',chart:'<path d="M5 21V8M12 21V3M19 21v-9"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',bolt:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.1"/>',shield:'<path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>'};
+const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[n]}</svg>`;
+const ROLES={admin:'Admin',tech:'Technician',viewer:'Viewer'};
+const PERM={admin:{record:1,add:1,edit:1,users:1,settings:1},tech:{record:1,add:1},viewer:{}};
+const DEF_TH={'12V':[11.5,12.0,12.4,12.6],'EV':[360,375,390,400]};
+let S,page='dash',filt='All',q='',per='Daily',rf='',rt='',hb='',selUser=null,loginErr='';
+const ls={get(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}},set(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}};
+const save=()=>ls.set(S);
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function status(type,v,action,th){if(action==='Started Charging')return'Charging';if(action==='Fault')return'Faulty';const t=(th||S.th)[type];return v<t[0]?'Critical':v<t[1]?'Low':v<t[2]?'Fair':v<t[3]?'Good':'Charged'}
+function seed(){const n=Date.now(),th=DEF_TH;
+const D=[['12V-00127','Forklift pack A','12V','Rack B-2',11.62,20],['12V-00128','Generator starter','12V','Rack B-3',12.68,18],['EV-40051','Fleet car #3 pack','EV','Charging bay 1',384.2,14],['EV-40052','Fleet car #5 pack','EV','Charging bay 2',358,24],['12V-00129','Backup UPS','12V','Rack A-1',12.42,21],['12V-00130','Workshop spare','12V','Charger 3',12.5,17]];
+const bs=[],rs=[];D.forEach(([serial,name,type,loc,v,h],i)=>{const id='b'+i,ch=serial==='12V-00130',act=ch?'Started Charging':'Measurement',st=status(type,v,act,th);
+bs.push({id,serial,name,type,nominal:type==='EV'?400:12,location:loc,ah:'',mfr:'',notes:'',v,status:st,at:n-h*H});
+if(ch)rs.push({id:'r'+i+'a',bid:id,v:12.31,action:'Measurement',notes:'Low after storage',status:'Low',at:n-19*H,by:'Admin'});
+rs.push({id:'r'+i,bid:id,v,action:act,notes:ch?'Placed on charger 3':'',status:st,at:n-h*H,by:'Admin'})});
+return{users:[{id:'u1',name:'Admin',pin:'1234',role:'admin'},{id:'u2',name:'Sara (Technician)',pin:'1111',role:'tech'},{id:'u3',name:'Omar (Viewer)',pin:'0000',role:'viewer'}],batteries:bs,readings:rs,th:JSON.parse(JSON.stringify(th)),me:null,theme:''}}
+S=ls.get()||seed();
+const me=()=>S.users.find(u=>u.id===S.me),can=p=>{const u=me();return !!(u&&PERM[u.role][p])};
+const ago=t=>{const m=Math.floor((Date.now()-t)/6e4);return m<1?'just now':m<60?m+'m ago':m<2880?Math.floor(m/60)+'h ago':Math.floor(m/1440)+'d ago'};
+const badge=s=>`<span class="b s-${s}"><i></i>${s}</span>`;
+const fv=(b,v)=>(b.type==='EV'?Number(v).toFixed(2):Number(v).toFixed(2))+' V';
+const bad=b=>['Low','Critical','Faulty'].includes(b.status),good=b=>['Good','Charged'].includes(b.status);
+function toast(m){const t=$('#toast');t.innerHTML=`<div class="toast">${esc(m)}</div>`;setTimeout(()=>t.innerHTML='',2200)}
+function modal(h){$('#modal').innerHTML=`<div class="dim" onclick="if(event.target===this)closeM()"><div class="modal" role="dialog" aria-modal="true"><button class="x" onclick="closeM()" aria-label="Close">×</button>${h}</div></div>`}
+const closeM=()=>$('#modal').innerHTML='';
+function applyTheme(){if(S.theme)document.documentElement.dataset.theme=S.theme;else delete document.documentElement.dataset.theme}
+
+/* ---------- login ---------- */
+function loginView(){$('#root').innerHTML=`<div class="login"><div class="brand" style="border:0"><div class="logo">${ic('bolt')}</div><div><b style="font-size:20px">Gallega Battery Charging</b><small>Battery Monitoring</small></div></div>
+<div class="card"><h3>Sign in</h3><p>Choose your account and enter your PIN.</p>
+${S.users.map(u=>`<button class="pick ${selUser===u.id?'on':''}" onclick="selUser='${u.id}';loginErr='';loginView()"><span class="av">${esc(u.name[0])}</span><span style="flex:1"><b>${esc(u.name)}</b></span><span class="role">${ROLES[u.role]}</span></button>`).join('')}
+${selUser?`<label for="pin">PIN</label><input class="in" id="pin" type="password" inputmode="numeric" maxlength="8" onkeydown="if(event.key==='Enter')login()" autofocus><button class="btn pri wide" onclick="login()">Sign in</button>`:''}
+${loginErr?`<div class="err">${loginErr}</div>`:''}
+<p class="note">Demo PINs: Admin 1234 · Technician 1111 · Viewer 0000. Accounts and data are stored in this browser only.</p></div></div>`}
+function login(){const u=S.users.find(x=>x.id===selUser);if(u&&$('#pin').value===u.pin){S.me=u.id;save();loginErr='';page='dash';render()}else{loginErr='Incorrect PIN. Try again.';loginView()}}
+function logout(){S.me=null;selUser=null;save();render()}
+
+/* ---------- shell ---------- */
+const NAV=[['dash','Dashboard','dash'],['stock','Battery Stock','box'],['rec','Record Reading','plus'],['rep','Reports','chart'],['set','Settings','gear']];
+function render(){applyTheme();if(!me()){loginView();return}const u=me();
+$('#root').innerHTML=`<div class="app"><aside class="side"><div class="brand"><div class="logo">${ic('bolt')}</div><div><b>Gallega Battery Charging</b><small>Battery Monitoring</small></div></div>
+${NAV.map(n=>`<button class="nav ${page===n[0]?'on':''}" onclick="go('${n[0]}')">${ic(n[2])}${n[1]}</button>`).join('')}
+<div class="me"><span class="av">${esc(u.name[0])}</span><div><b>${esc(u.name)}</b><small>${ROLES[u.role]}</small></div><button class="btn" onclick="logout()">Sign out</button></div></aside><main>${({dash,stock,rec,rep,set})[page]()}</main></div>`}
+function go(p){page=p;filt='All';q='';render();window.scrollTo(0,0)}
+
+function row(b,fn,extra=''){return `<div class="row" onclick="${fn}('${b.id}')" tabindex="0" onkeydown="if(event.key==='Enter')${fn}('${b.id}')"><div class="l"><b>${esc(b.serial)}</b><span class="tag">${b.type}</span><small>${esc(b.name)}</small></div>${extra?`<div class="loc">${esc(b.location)}</div>`:''}<div class="volt"><b>${fv(b,b.v)}</b><small>${ago(b.at)}</small></div>${badge(b.status)}</div>`}
+
+function dash(){const B=S.batteries,att=B.filter(bad),R=[...S.readings].sort((a,b)=>b.at-a.at).slice(0,5);
+const C=(t,n,sub,col,i)=>`<div class="stat"><div><span>${t}</span><strong>${n}</strong><small>${sub}</small></div><div class="ic" style="background:${col}">${ic(i,22)}</div></div>`;
+return `<h1>Dashboard</h1><p class="sub">Live overview of EV &amp; 12V battery stock and charging activity.</p>
+<div class="stats">${C('Total in stock',B.length,'','#334155','box')}${C('Need attention',att.length,'Require charging / faulty','#ef4444','alert')}${C('Charging now',B.filter(b=>b.status==='Charging').length,'','#0ea5e9','bolt')}${C('Healthy',B.filter(good).length,'','#059669','shield')}</div>
+<h2><span style="color:#ef4444">${ic('alert',18)}</span>Require immediate attention</h2><div class="list">${att.map(b=>row(b,'detail',1)).join('')||'<div class="empty">Nothing needs attention right now.</div>'}</div>
+<h2>Recent activity</h2><div class="list">${R.map(r=>{const b=S.batteries.find(x=>x.id===r.bid);return b?`<div class="row" onclick="detail('${b.id}')"><div class="l"><b>${esc(b.serial)}</b> <small style="display:inline">${esc(r.action)}</small><small>${esc(r.notes||'—')}</small></div><div class="volt"><b>${fv(b,r.v)}</b></div>${badge(r.status)}<small style="width:60px;text-align:right;color:var(--mute)">${ago(r.at)}</small></div>`:''}).join('')||'<div class="empty">No readings yet.</div>'}</div>`}
+
+function stock(){const FS={'All':()=>1,'Needs attention':bad,'Charging':b=>b.status==='Charging','Charged / Good':good,'EV':b=>b.type==='EV','12V':b=>b.type==='12V'};
+const L=S.batteries.filter(FS[filt]).filter(b=>(b.serial+b.name+b.location).toLowerCase().includes(q.toLowerCase()));
+return `<div class="top"><div><h1>Battery Stock</h1><p class="sub">${L.length} of ${S.batteries.length} batteries</p></div><div class="btns">${can('add')?'<button class="btn" onclick="importForm()">Import Excel</button>':''}<button class="btn" onclick="exportStock()">Export</button>${can('add')?'<button class="btn pri" onclick="addForm()">+ Add battery</button>':''}</div></div>
+<input class="search" placeholder="Search serial, name, location…" value="${esc(q)}" oninput="q=this.value;keep()" aria-label="Search">
+<div class="chips">${Object.keys(FS).map(k=>`<button class="chip ${filt===k?'on':''}" onclick="filt='${k}';render()">${k}</button>`).join('')}</div>
+<div class="list">${L.map(b=>row(b,'detail',1)).join('')||'<div class="empty">No batteries match. Clear the search or filter.</div>'}</div>`}
+function keep(){const p=page;render();const i=document.querySelector('.search');if(i){i.focus();i.setSelectionRange(q.length,q.length)}}
+
+function rec(){const L=S.batteries.filter(b=>(b.serial+b.name).toLowerCase().includes(q.toLowerCase()));
+return `<h1>Record a reading</h1><p class="sub">${can('record')?'Select a battery to log a voltage measurement or charging action.':'Your role is view-only. Ask an admin for Technician access to record readings.'}</p>
+<input class="search" placeholder="Search battery serial or name…" value="${esc(q)}" oninput="q=this.value;keep()" aria-label="Search"><div class="list" style="margin-top:14px">${L.map(b=>row(b,can('record')?'readForm':'detail')).join('')||'<div class="empty">No batteries found.</div>'}</div>`}
+
+function detail(id){const b=S.batteries.find(x=>x.id===id),R=S.readings.filter(r=>r.bid===id).sort((a,c)=>c.at-a.at).slice(0,8);
+modal(`<h3>${esc(b.serial)} <span class="tag">${b.type}</span></h3><p style="margin:0 0 10px;color:var(--mute)">${esc(b.name||'No label')} · ${esc(b.location||'No location')}</p><div>${badge(b.status)} <b style="margin-left:8px">${fv(b,b.v)}</b></div>
+<p class="note">${[b.ah&&b.ah+' Ah',b.mfr,b.notes].filter(Boolean).map(esc).join(' · ')}</p>
+<h2 style="margin:16px 0 6px;font-size:14px">History</h2><div class="list">${R.map(r=>`<div class="row" style="cursor:default;padding:10px 14px"><div class="l"><b>${fv(b,r.v)}</b><small>${esc(r.action)} · ${esc(r.by||'')} · ${ago(r.at)}</small></div>${badge(r.status)}</div>`).join('')}</div>
+${can('record')?`<button class="btn pri wide" onclick="readForm('${id}')">Record reading</button>`:''}
+${can('edit')?`<button class="btn red wide" onclick="delB('${id}')" style="margin-top:8px">Delete battery</button>`:''}`)}
+function delB(id){if(!confirm('Delete this battery and its history?'))return;S.batteries=S.batteries.filter(b=>b.id!==id);S.readings=S.readings.filter(r=>r.bid!==id);save();closeM();render();toast('Battery deleted')}
+
+function addForm(){modal(`<h3>Add battery to stock</h3><div class="g2"><div><label>Serial number *</label><input class="in" id="f_s" placeholder="e.g. 12V-00127"></div><div><label>Name / label</label><input class="in" id="f_n" placeholder="Optional"></div>
+<div><label>Type</label><select class="in" id="f_t" onchange="$('#f_v').value=this.value==='EV'?400:12"><option>12V</option><option>EV</option></select></div><div><label>Nominal voltage (V)</label><input class="in" id="f_v" type="number" value="12"></div>
+<div><label>Location</label><input class="in" id="f_l" placeholder="Rack / zone"></div><div><label>Capacity (Ah)</label><input class="in" id="f_a" type="number"></div></div>
+<label>Manufacturer</label><input class="in" id="f_m"><label>Notes</label><textarea class="in" id="f_o" rows="2"></textarea><div class="err" id="f_e"></div><button class="btn pri wide" onclick="addB()">Add to stock</button>`)}
+function addB(){const s=$('#f_s').value.trim(),t=$('#f_t').value;if(!s){$('#f_e').textContent='Enter a serial number.';return}
+if(S.batteries.some(b=>b.serial.toLowerCase()===s.toLowerCase())){$('#f_e').textContent='That serial number already exists.';return}
+S.batteries.push({id:uid('b'),serial:s,name:$('#f_n').value.trim(),type:t,nominal:+$('#f_v').value,location:$('#f_l').value.trim(),ah:$('#f_a').value,mfr:$('#f_m').value.trim(),notes:$('#f_o').value.trim(),v:S.batteries.length?+$('#f_v').value:0,status:'Charged',at:Date.now()});save();closeM();render();toast('Battery added')}
+
+let imp=[];
+const MAP={serial:['serial','serialnumber','serialno','sn'],name:['name','label','namelabel'],type:['type','batterytype'],nominal:['nominalvoltage','nominal','nominalv'],location:['location','rack','zone'],ah:['capacity','capacityah','ah'],mfr:['manufacturer','mfr','brand'],notes:['notes','note','remarks'],v:['voltage','currentvoltage','reading','lastvoltage']};
+function importForm(){imp=[];modal(`<h3>Import batteries from Excel</h3><p class="note" style="margin-top:0">Choose an .xlsx, .xls or .csv file with a header row. Columns: <b>Serial</b> (required), Name, Type (12V or EV), Nominal Voltage, Location, Capacity (Ah), Manufacturer, Notes, Voltage. Serials already in stock are skipped.</p><input class="in" type="file" id="imf" accept=".xlsx,.xls,.csv" onchange="readImp(this.files[0])" aria-label="Excel file"><div id="imp"></div>`)}
+function readImp(f){if(!f)return;const o=$('#imp');if(!window.XLSX){o.innerHTML='<div class="err">The Excel reader could not load. Check your connection and reload the page.</div>';return}
+const fr=new FileReader();fr.onload=e=>{let rows;try{const wb=XLSX.read(e.target.result,{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''})}catch(x){o.innerHTML='<div class="err">Could not read this file. Save it as .xlsx or .csv and try again.</div>';return}prepImp(rows)};fr.readAsArrayBuffer(f)}
+function prepImp(rows){const seen=new Set(S.batteries.map(b=>b.serial.toLowerCase())),skip=[];imp=[];
+rows.forEach((r,i)=>{const g={};Object.keys(r).forEach(k=>{const nk=k.toLowerCase().replace(/[^a-z]/g,'');for(const f in MAP)if(MAP[f].includes(nk)&&g[f]===undefined)g[f]=String(r[k]).trim()});
+const s=g.serial||'';if(!s){skip.push([i+2,'—','Missing serial number']);return}if(seen.has(s.toLowerCase())){skip.push([i+2,s,'Already in stock or repeated in file']);return}seen.add(s.toLowerCase());
+const t=/ev/i.test(g.type||'')||(!g.type&&/^ev/i.test(s))?'EV':'12V',nom=parseFloat(g.nominal)||(t==='EV'?400:12),rv=parseFloat(g.v),has=rv>0,v=has?rv:nom;
+imp.push({id:uid('b'),serial:s,name:g.name||'',type:t,nominal:nom,location:g.location||'',ah:g.ah||'',mfr:g.mfr||'',notes:g.notes||'',v,has,status:status(t,v,'Measurement'),at:Date.now()})});
+$('#imp').innerHTML=`<p style="margin:14px 0 6px"><b>${imp.length}</b> ready to import${skip.length?`, <b>${skip.length}</b> skipped`:''}.</p>
+${imp.length?`<div class="list tw"><table><tr><th>Serial</th><th>Type</th><th>Location</th><th style="text-align:right">Voltage</th></tr>${imp.slice(0,5).map(b=>`<tr><td><b>${esc(b.serial)}</b></td><td>${b.type}</td><td>${esc(b.location)}</td><td style="text-align:right">${b.has?fv(b,b.v):'—'}</td></tr>`).join('')}</table></div>${imp.length>5?`<p class="note">…and ${imp.length-5} more.</p>`:''}<p class="note">Batteries without a Voltage column start at their nominal voltage. Record a reading to update them.</p>`:''}
+${skip.length?`<p class="note" style="color:#dc2626">Skipped: ${skip.slice(0,5).map(s=>`row ${s[0]} (${esc(s[1])}) – ${s[2]}`).join('; ')}${skip.length>5?`; and ${skip.length-5} more`:''}</p>`:''}
+<button class="btn pri wide" ${imp.length?'':'disabled'} onclick="doImp()">Import ${imp.length} batter${imp.length===1?'y':'ies'}</button>`}
+function doImp(){if(!can('add'))return;const n=Date.now(),u=me().name;imp.forEach(b=>{const h=b.has;delete b.has;S.batteries.push(b);if(h)S.readings.push({id:uid('r'),bid:b.id,v:b.v,action:'Measurement',notes:'Imported from Excel',status:b.status,at:n,by:u})});const c=imp.length;imp=[];save();closeM();render();toast(c+' batteries imported')}
+
+function readForm(id){const b=S.batteries.find(x=>x.id===id);modal(`<h3>Record reading — ${esc(b.serial)}</h3><label>Voltage reading (V)</label><input class="in" id="r_v" type="number" step="0.01" placeholder="e.g. ${b.type==='EV'?'385.5':'12.45'}" autofocus>
+<label>Action</label><select class="in" id="r_a"><option>Measurement</option><option>Started Charging</option><option>Stopped Charging</option><option>Fault</option></select><label>Notes (optional)</label><textarea class="in" id="r_n" rows="2" placeholder="Any observations…"></textarea><div class="err" id="r_e"></div><button class="btn pri wide" onclick="addR('${id}')">Record reading</button>`)}
+function addR(id){const b=S.batteries.find(x=>x.id===id),v=parseFloat($('#r_v').value);if(!(v>0)){$('#r_e').textContent='Enter a voltage greater than 0.';return}
+const a=$('#r_a').value,st=status(b.type,v,a);b.v=v;b.status=st;b.at=Date.now();S.readings.push({id:uid('r'),bid:id,v,action:a,notes:$('#r_n').value.trim(),status:st,at:Date.now(),by:me().name});save();closeM();render();toast('Reading recorded')}
+
+/* ---------- reports ---------- */
+const PERS=['Daily','Weekly','Monthly','Custom'],PLBL={Daily:'today',Weekly:'this week',Monthly:'this month',Custom:'in this range'};
+function range(){const n=Date.now();if(per==='Custom')return[rf?new Date(rf+'T00:00:00').getTime():n-30*24*H,rt?new Date(rt+'T23:59:59').getTime():n];return[n-{Daily:1,Weekly:7,Monthly:30}[per]*24*H,n]}
+const fd=t=>new Date(t).toLocaleString(undefined,{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}),dl=t=>new Date(t).toLocaleDateString(undefined,{day:'numeric',month:'short'});
+function trend(b,P){if(P.length<2)return'<div class="empty">Need at least 2 readings in this period to draw a trend.</div>';
+const w=640,h=190,l=48,vs=P.map(r=>r.v),mn=Math.min(...vs),mx=Math.max(...vs),sp=mx-mn||1,t0=P[0].at,t1=P[P.length-1].at,ts=t1-t0||1;
+const X=t=>l+(t-t0)/ts*(w-l-12),Y=v=>h-20-(v-mn)/sp*(h-52);
+return `<svg viewBox="0 0 ${w} ${h}" width="100%" role="img" aria-label="Voltage trend for ${esc(b.serial)}" style="display:block"><line x1="${l}" x2="${w-12}" y1="${Y(mn)}" y2="${Y(mn)}" stroke="var(--line)"/><line x1="${l}" x2="${w-12}" y1="${Y(mx)}" y2="${Y(mx)}" stroke="var(--line)"/><text x="${l-6}" y="${Y(mx)+4}" text-anchor="end" font-size="11" fill="var(--mute)">${mx.toFixed(1)}</text><text x="${l-6}" y="${Y(mn)+4}" text-anchor="end" font-size="11" fill="var(--mute)">${mn.toFixed(1)}</text><polyline points="${P.map(r=>X(r.at).toFixed(1)+','+Y(r.v).toFixed(1)).join(' ')}" fill="none" stroke="var(--brand)" stroke-width="2"/>${P.map(r=>`<circle class="s-${r.status}" cx="${X(r.at).toFixed(1)}" cy="${Y(r.v).toFixed(1)}" r="4" style="fill:var(--c)"><title>${fv(b,r.v)} · ${r.status} · ${fd(r.at)}</title></circle>`).join('')}<text x="${l}" y="${h-4}" font-size="11" fill="var(--mute)">${dl(t0)}</text><text x="${w-12}" y="${h-4}" text-anchor="end" font-size="11" fill="var(--mute)">${dl(t1)}</text></svg>`}
+function rep(){const[a0,b0]=range(),R=S.readings.filter(r=>r.at>=a0&&r.at<=b0).sort((x,y)=>x.at-y.at),B=S.batteries;
+const act={};R.forEach(r=>{(act[r.bid]=act[r.bid]||{n:0}).n++;act[r.bid].v=r.v;act[r.bid].s=r.status});
+const need=B.filter(bad),cnt=s=>B.filter(b=>b.status===s).length;
+const C=(t,n,red)=>`<div class="stat"><div><span>${t}</span><strong ${red&&n?'style="color:#dc2626"':''}>${n}</strong></div></div>`;
+if(!B.find(x=>x.id===hb))hb=B[0]?B[0].id:'';const hbat=B.find(x=>x.id===hb),hasSample=S.readings.some(r=>r.by==='Sample data');
+const log=[...R].reverse().slice(0,100);
+return `<div class="top"><div><h1>Reports</h1><p class="sub">Daily, weekly, monthly and custom-range summaries with full reading history.</p></div><div class="btns"><div class="seg">${PERS.map(p=>`<button class="${per===p?'on':''}" onclick="per='${p}';render()">${p}</button>`).join('')}</div><button class="btn" onclick="exportRep()">Export</button></div></div>
+${per==='Custom'?`<div class="btns" style="margin-bottom:16px;align-items:end"><div><label style="margin-top:0">From</label><input class="in" type="date" value="${rf}" onchange="rf=this.value;render()"></div><div><label style="margin-top:0">To</label><input class="in" type="date" value="${rt}" onchange="rt=this.value;render()"></div></div>`:''}
+<div class="stats">${C('Total in stock',B.length)}${C('Require charging',need.length,1)}${C('Readings in period',R.length)}${C('Active batteries',Object.keys(act).length)}</div>
+<h2><span style="color:#ef4444">${ic('alert',18)}</span>Batteries requiring charging <small style="color:var(--mute)">(${need.length})</small></h2><div class="list tw"><table><tr><th>Serial</th><th>Type</th><th style="text-align:right">Voltage</th><th>Status</th><th>Location</th></tr>${need.map(b=>`<tr><td><b>${esc(b.serial)}</b></td><td>${b.type}</td><td style="text-align:right"><b>${fv(b,b.v)}</b></td><td>${badge(b.status)}</td><td>${esc(b.location)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">All batteries are in good shape.</td></tr>'}</table></div>
+<h2>Stock status breakdown</h2><div class="list" style="padding:10px 0">${['Critical','Low','Fair','Good','Charged','Charging','Faulty'].map(s=>`<div class="bar s-${s}"><em>${s}</em><div><i style="width:${B.length?cnt(s)/B.length*100:0}%"></i></div><b>${cnt(s)}</b></div>`).join('')}</div>
+<h2>Activity ${PLBL[per]}</h2><div class="list tw"><table><tr><th>Battery</th><th style="text-align:right">Readings</th><th style="text-align:right">Last voltage</th><th>Last status</th></tr>${Object.entries(act).map(([id,a])=>{const b=B.find(x=>x.id===id);return b?`<tr><td><b>${esc(b.serial)}</b></td><td style="text-align:right">${a.n}</td><td style="text-align:right"><b>${fv(b,a.v)}</b></td><td>${badge(a.s)}</td></tr>`:''}).join('')||'<tr><td colspan="4" class="empty">No readings in this period.</td></tr>'}</table></div>
+<h2>Voltage history</h2><div class="card"><label style="margin-top:0" for="hb">Battery</label><select class="in" id="hb" style="max-width:320px" onchange="hb=this.value;render()">${B.map(b=>`<option value="${b.id}" ${b.id===hb?'selected':''}>${esc(b.serial)} – ${esc(b.name)}</option>`).join('')}</select><div style="margin-top:12px">${hbat?trend(hbat,R.filter(r=>r.bid===hb)):''}</div>
+<p class="note">Dot colors show the status at each reading. Pick Weekly, Monthly or Custom above to look further back.</p>${can('settings')?`<div style="margin-top:8px">${hasSample?'<button class="btn" onclick="clearSample()">Remove sample history</button>':'<button class="btn" onclick="loadSample()">Load 30 days of sample history</button>'}</div>`:''}</div>
+<h2>Reading log <small style="color:var(--mute)">(${R.length}${R.length>100?', showing latest 100':''})</small></h2><div class="list tw"><table><tr><th>Time</th><th>Battery</th><th style="text-align:right">Voltage</th><th>Action</th><th>Status</th><th>By</th></tr>${log.map(r=>{const b=B.find(x=>x.id===r.bid);return b?`<tr><td>${fd(r.at)}</td><td><b>${esc(b.serial)}</b></td><td style="text-align:right"><b>${fv(b,r.v)}</b></td><td>${esc(r.action)}</td><td>${badge(r.status)}</td><td>${esc(r.by||'')}</td></tr>`:''}).join('')||'<tr><td colspan="6" class="empty">No readings in this period.</td></tr>'}</table></div>`}
+function loadSample(){const n=Date.now();S.batteries.forEach(b=>{const k=8+Math.floor(Math.random()*5);for(let i=0;i<k;i++){const t=n-(2+Math.random()*28)*24*H,v=b.type==='EV'?355+Math.random()*50:11.6+Math.random()*1.2,a=Math.random()<.2?'Started Charging':'Measurement';S.readings.push({id:uid('r'),bid:b.id,v:+v.toFixed(2),action:a,notes:'',status:status(b.type,v,a),at:t,by:'Sample data'})}});save();render();toast('Sample history added')}
+function clearSample(){S.readings=S.readings.filter(r=>r.by!=='Sample data');save();render();toast('Sample history removed')}
+
+/* ---------- export (copy-as-CSV; downloads are blocked in published pages) ---------- */
+const csv=rows=>rows.map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+function showCSV(title,t){modal(`<h3>${title}</h3><p class="note" style="margin-top:0">Copy this CSV and paste it into Excel or Google Sheets.</p><textarea class="in" id="csv" rows="10" readonly style="font-family:monospace;font-size:12px">${esc(t)}</textarea><button class="btn pri wide" onclick="copyCSV()">Copy CSV</button>`)}
+function copyCSV(){const t=$('#csv');t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(()=>toast('Copied')).catch(()=>{});else toast(ok?'Copied':'Press Ctrl+C to copy')}
+function exportStock(){showCSV('Export battery stock',csv([['Serial','Name','Type','Location','Voltage','Status','Last reading']].concat(S.batteries.map(b=>[b.serial,b.name,b.type,b.location,b.v,b.status,new Date(b.at).toLocaleString()]))))}
+function exportRep(){const[a0,b0]=range();showCSV(per+' report',csv([['Serial','Voltage','Action','Status','By','Time']].concat(S.readings.filter(r=>r.at>=a0&&r.at<=b0).map(r=>{const b=S.batteries.find(x=>x.id===r.bid);return[b?b.serial:'',r.v,r.action,r.status,r.by,new Date(r.at).toLocaleString()]}))))}
+
+/* ---------- settings: profile, thresholds, users & roles ---------- */
+function set(){const u=me(),adm=can('settings');
+const th=t=>`<div class="th4"><b>${t}</b>${S.th[t].map((v,i)=>`<div><small>${['Critical <','Low <','Fair <','Good <'][i]}</small><input class="in" type="number" step="0.1" id="th_${t}_${i}" value="${v}" ${adm?'':'disabled'}></div>`).join('')}</div>`;
+return `<h1>Settings</h1><p class="sub">Manage your profile, voltage thresholds, and who can do what.</p>
+<div class="card"><h3>Your profile</h3><p>Signed in as <b>${esc(u.name)}</b> <span class="role">${ROLES[u.role]}</span></p><div class="g2"><div><label>Display name</label><input class="in" id="p_n" value="${esc(u.name)}"></div><div><label>New PIN (4–8 digits)</label><input class="in" id="p_p" type="password" inputmode="numeric" maxlength="8" placeholder="Leave blank to keep"></div></div>
+<label>Theme</label><div class="seg">${[['','System'],['light','Light'],['dark','Dark']].map(([v,l])=>`<button class="${S.theme===v?'on':''}" onclick="S.theme='${v}';save();render()">${l}</button>`).join('')}</div><div class="err" id="p_e"></div><div><button class="btn pri" style="margin-top:14px" onclick="saveProfile()">Save profile</button></div></div>
+<div class="card"><h3>Voltage thresholds</h3><p>A battery's status is set from its latest voltage. ${adm?'':'Only admins can change these.'}</p>${th('12V')}${th('EV')}${adm?'<button class="btn pri" onclick="saveTh()">Save thresholds</button> <button class="btn" onclick="resetTh()">Reset to defaults</button>':''}</div>
+<div class="card"><h3>Users &amp; roles</h3><p>${adm?'Add people and choose what each role can do.':'Only admins can manage users.'}</p>
+<div class="list tw"><table><tr><th>Name</th><th>Role</th><th></th></tr>${S.users.map(x=>`<tr><td><b>${esc(x.name)}</b>${x.id===u.id?' <small style="color:var(--mute)">(you)</small>':''}</td><td>${adm?`<select class="in" style="width:auto" onchange="setRole('${x.id}',this.value)">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${x.role===k?'selected':''}>${v}</option>`).join('')}</select>`:`<span class="role">${ROLES[x.role]}</span>`}</td><td style="text-align:right">${adm&&x.id!==u.id?`<button class="btn red" onclick="delU('${x.id}')">Remove</button>`:''}</td></tr>`).join('')}</table></div>
+${adm?'<button class="btn pri" style="margin-top:12px" onclick="userForm()">+ Add user</button>':''}</div>
+<div class="card"><h3>What each role can do</h3><div class="list tw"><table><tr><th>Permission</th><th>Admin</th><th>Technician</th><th>Viewer</th></tr>${[['View dashboard, stock &amp; reports','1,1,1'],['Record readings &amp; charging actions','1,1,0'],['Add batteries to stock','1,1,0'],['Delete batteries','1,0,0'],['Change thresholds, manage users &amp; roles','1,0,0']].map(([t,p])=>`<tr><td>${t}</td>${p.split(',').map(x=>`<td>${x==='1'?'<span style="color:var(--brand)">✓</span>':'—'}</td>`).join('')}</tr>`).join('')}</table></div></div>`}
+function saveProfile(){const u=me(),n=$('#p_n').value.trim(),p=$('#p_p').value;if(!n){$('#p_e').textContent='Enter a display name.';return}
+if(p&&!/^\d{4,8}$/.test(p)){$('#p_e').textContent='PIN must be 4–8 digits.';return}u.name=n;if(p)u.pin=p;save();render();toast('Profile saved')}
+function saveTh(){const N={};for(const t of['12V','EV']){N[t]=[0,1,2,3].map(i=>parseFloat($(`#th_${t}_${i}`).value));if(N[t].some(isNaN)||N[t].some((v,i)=>i&&v<=N[t][i-1])){toast(t+' thresholds must increase from Critical to Good');return}}
+S.th=N;S.batteries.forEach(b=>{if(!['Charging','Faulty'].includes(b.status))b.status=status(b.type,b.v,'Measurement')});save();render();toast('Thresholds saved')}
+function resetTh(){S.th=JSON.parse(JSON.stringify(DEF_TH));saveTh()}
+function setRole(id,r){const admins=S.users.filter(u=>u.role==='admin');const x=S.users.find(u=>u.id===id);if(x.role==='admin'&&r!=='admin'&&admins.length<2){toast('Keep at least one admin');render();return}x.role=r;save();render();toast('Role updated')}
+function delU(id){if(!confirm('Remove this user?'))return;S.users=S.users.filter(u=>u.id!==id);save();render();toast('User removed')}
+function userForm(){modal(`<h3>Add user</h3><label>Name</label><input class="in" id="u_n"><label>PIN (4–8 digits)</label><input class="in" id="u_p" type="password" inputmode="numeric" maxlength="8"><label>Role</label><select class="in" id="u_r">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${k==='tech'?'selected':''}>${v}</option>`).join('')}</select><div class="err" id="u_e"></div><button class="btn pri wide" onclick="addU()">Add user</button>`)}
+function addU(){const n=$('#u_n').value.trim(),p=$('#u_p').value;if(!n){$('#u_e').textContent='Enter a name.';return}if(!/^\d{4,8}$/.test(p)){$('#u_e').textContent='PIN must be 4–8 digits.';return}
+if(S.users.some(u=>u.name.toLowerCase()===n.toLowerCase())){$('#u_e').textContent='That name is already used.';return}S.users.push({id:uid('u'),name:n,pin:p,role:$('#u_r').value});save();closeM();render();toast('User added')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+render();
+</script></body></html>
